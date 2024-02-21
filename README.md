@@ -13,7 +13,7 @@ This repo contains the UXLink core contracts.
 
 ## Community
 
-UXLink has an active and ever growing community. [Telegram](https://t.me/uxlinkofficial), [Telegram](https://t.me/uxlinkofficial2)
+UXLink has an active and ever growing community. [Telegram UXLINK® ](https://t.me/uxlinkofficial), [Telegram UXLINK® 2](https://t.me/uxlinkofficial2)
 are the primary communication used for day to day communication,
 answering questions, and aggregating UXLink related content. Take
 a look at the [community blogs](https://blog.uxlink.io/) for more information
