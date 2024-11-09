@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@0xsequence/sstore2": "github:0xsequence/sstore2",
+    "@account-abstraction/contracts": "^0.6.0",
     "@openzeppelin/contracts": "^4.9.3",
     "@stdlib/string-format": "^0.1.1",
     "@uniswap/swap-router-contracts": "^1.3.1",
