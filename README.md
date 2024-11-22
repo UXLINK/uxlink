@@ -1,6 +1,6 @@
 ![image](https://uxuy.hk.ufileos.com/uxlink-social-layer.png)
 
-# UXLINK Labs 
+# UXLINK 
 
 An open source repository of all UXLINK contracts maintained by UXLINK Labs. This repo contains the UXLink core contracts. 
 UXLINK Social Growth Layer is an infrastructure Layer which contains chain abstraction, accounts abstraction, universal gas, social protocols, etc.
