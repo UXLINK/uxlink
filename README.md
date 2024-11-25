@@ -40,3 +40,41 @@ regarding UXLink social accounts, news, and networking.
 | `documents/`| Shared Development documents and UXLINK contract descriptions.                 |
 | `scripts/`  | UXLINK core contract running script.                                           |
 
+## Getting Started
+
+### Install
+
+1. Install the required packages
+   ```
+   npm install
+   ```
+
+2. Open hardhat.config.js file and add the following scripts (we use the https://www.alchemy.com/ service):
+  
+   ```
+   const PRIVATE_KEY = "your-wallet-private-key";
+   const alchemyNetworkUrl = "https://arb-goerli.alchemyapi.io/v2/your-api-key";
+   ```
+
+### Compile
+  ```
+  npx hardhat compile
+  ```
+### Test
+  ```
+  npx hardhat test
+  ```
+
+### test all contacrts
+  ```
+  npx hardhat test --network arb_goerli
+  ```
+
+### Test one contacrt
+  ```
+  npx hardhat test --network arb_goerli ./test/your_test_script.js
+  ```
+### Deploy Contracts
+  ```
+  npx hardhat run --network arb_goerli ./scripts/your_test_script.js
+  ```
