@@ -4,12 +4,10 @@ pragma abicoder v2;
 
 import "@openzeppelin/contracts/utils/Context.sol";
 
-
 abstract contract Manager is Context {
-
     mapping(address => bool) private _accounts;
 
-    modifier onlyManager {
+    modifier onlyManager() {
         require(isManager(), "only manager");
         _;
     }
@@ -31,7 +29,10 @@ abstract contract Manager is Context {
         _accounts[one] = val;
     }
 
-    function setManagerBatch(address[] calldata list, bool val) public onlyManager {
+    function setManagerBatch(
+        address[] calldata list,
+        bool val
+    ) public onlyManager {
         for (uint256 i = 0; i < list.length; i++) {
             setManager(list[i], val);
         }

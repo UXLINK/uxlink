@@ -7,17 +7,15 @@
 const hre = require("hardhat");
 
 async function main() {
-
-    UXSwapV1 = await ethers.getContractFactory("UXSwapV1");
-    uXSwapV1 = await UXSwapV1.deploy();
-    await uXSwapV1.deployed();
-    console.log("UXSwapV1 contract deployed at:", uXSwapV1.address);
-
+  UXSwapV1 = await ethers.getContractFactory("UXSwapV1");
+  uXSwapV1 = await UXSwapV1.deploy();
+  await uXSwapV1.deployed();
+  console.log("UXSwapV1 contract deployed at:", uXSwapV1.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
+  console.error(error);
+  process.exitCode = 1;
 });

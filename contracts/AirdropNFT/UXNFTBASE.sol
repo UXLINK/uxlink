@@ -2,14 +2,14 @@
 pragma solidity >=0.8.19;
 pragma abicoder v2;
 
-import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
+import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import {ERC721A} from "erc721a/contracts/ERC721A.sol";
 import {Manager} from "../libs/Manager.sol";
 
 // @dev https://uxlink.io
-abstract contract UXNFTBASE is ERC721A, Manager,Pausable {
+abstract contract UXNFTBASE is ERC721A, Manager, Pausable {
     /// @notice Addresses of black users
     mapping(address => bool) private _blacklist;
     mapping(address => bool) public _whitelist;
@@ -18,8 +18,11 @@ abstract contract UXNFTBASE is ERC721A, Manager,Pausable {
 
     string private _uriBase = "";
 
-    constructor(string memory name, string memory symbol) ERC721A(name, symbol) {
-        setManager(msg.sender,true);
+    constructor(
+        string memory name,
+        string memory symbol
+    ) ERC721A(name, symbol) {
+        setManager(msg.sender, true);
     }
 
     function mint(address to, uint256 quantity) public onlyManager {
@@ -30,7 +33,9 @@ abstract contract UXNFTBASE is ERC721A, Manager,Pausable {
         _uriBase = base; // https://base.url?id=
     }
 
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+    function tokenURI(
+        uint256 tokenId
+    ) public view override returns (string memory) {
         if (!_exists(tokenId)) {
             revert URIQueryForNonexistentToken();
         }
@@ -54,16 +59,19 @@ abstract contract UXNFTBASE is ERC721A, Manager,Pausable {
     }
 
     function _beforeTokenTransfers(
-        address from, 
-        address to, 
-        uint256 firstTokenId, 
-        uint256 batchSize 
+        address from,
+        address to,
+        uint256 firstTokenId,
+        uint256 batchSize
     ) internal virtual override(ERC721A) {
         super._beforeTokenTransfers(from, to, firstTokenId, batchSize);
         require(!_blacklist[from], "Sending address is blacklisted.");
         require(!_blacklist[to], "Receiving address is blacklisted");
-        if(isUsingWhitelist){
-            require(_whitelist[from] || _whitelist[to], "Sending Or Receiving address is not on the whitelist");
+        if (isUsingWhitelist) {
+            require(
+                _whitelist[from] || _whitelist[to],
+                "Sending Or Receiving address is not on the whitelist"
+            );
         }
     }
 
@@ -83,7 +91,7 @@ abstract contract UXNFTBASE is ERC721A, Manager,Pausable {
     }
 
     function removeFromWhitelist(address _address) external onlyManager {
-         require(_whitelist[_address], "User is not on the whitelist.");
+        require(_whitelist[_address], "User is not on the whitelist.");
         _whitelist[_address] = false;
     }
 
@@ -92,22 +100,22 @@ abstract contract UXNFTBASE is ERC721A, Manager,Pausable {
     }
 
     function setUsingWhitelistStatus(bool _status) external onlyManager {
-         isUsingWhitelist = _status;
+        isUsingWhitelist = _status;
     }
 
     receive() external payable {}
 
-    function withdrawStuckToken(address _token, address _to) external onlyManager {
+    function withdrawStuckToken(
+        address _token,
+        address _to
+    ) external onlyManager {
         require(_token != address(0), "_token address cannot be 0");
         uint256 _contractBalance = IERC20(_token).balanceOf(address(this));
         TransferHelper.safeTransfer(_token, _to, _contractBalance);
     }
 
     function withdrawStuckEth(address toAddr) external onlyManager {
-        (bool success, ) = toAddr.call{
-            value: address(this).balance
-        } ("");
+        (bool success, ) = toAddr.call{value: address(this).balance}("");
         require(success);
     }
-
 }

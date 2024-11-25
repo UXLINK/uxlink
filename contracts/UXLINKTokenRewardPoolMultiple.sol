@@ -6,11 +6,14 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {IDeltaRewardPoolMultiple} from "../libs/IDeltaRewardPoolMultiple.sol";
-import {Manager} from "../libs/Manager.sol";
+import {IDeltaRewardPoolMultiple} from "./libs/IDeltaRewardPoolMultiple.sol";
+import {Manager} from "./libs/Manager.sol";
 
-
-contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGuard, Manager {
+contract UXLINKTokenRewardPoolMultiple is
+    IDeltaRewardPoolMultiple,
+    ReentrancyGuard,
+    Manager
+{
     using Address for address;
     using SafeERC20 for IERC20;
 
@@ -89,8 +92,8 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
     event SetRewardConfig(uint256 nextCycleReward, uint256 nextDuration);
     event StartNewEpoch(uint256 reward, uint256 duration);
 
-    constructor(){
-        setManager(msg.sender,true);
+    constructor() {
+        setManager(msg.sender, true);
     }
 
     function initialize(
@@ -103,7 +106,10 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
         uint256[] memory _stakeTimeRatio
     ) external onlyManager {
         require(!initialized, "initialize: Already initialized!");
-        require( _stakeTimeRatio.length<=36, "stakeTimeRatio length is invalid!");
+        require(
+            _stakeTimeRatio.length <= 36,
+            "stakeTimeRatio length is invalid!"
+        );
 
         withdrawOpened = true;
         devAddress = _devAddress;
@@ -147,7 +153,10 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
     function setStakeTimeRatio(
         uint256[] memory _stakeTimeRatio
     ) external onlyManager {
-        require( _stakeTimeRatio.length<=36, "stakeTimeRatio length is invalid!");
+        require(
+            _stakeTimeRatio.length <= 36,
+            "stakeTimeRatio length is invalid!"
+        );
         stakeTimeRatio = _stakeTimeRatio;
         emit SetStakeTimeRatio(_stakeTimeRatio);
     }
@@ -164,7 +173,10 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
     function addStakeTimeRatio(
         uint256[] memory _stakeTimeRatio
     ) external onlyManager {
-        require(_stakeTimeRatio.length <= 36, "stake time Ratio length is too long");
+        require(
+            _stakeTimeRatio.length <= 36,
+            "stake time Ratio length is too long"
+        );
         for (uint256 i = 0; i < _stakeTimeRatio.length; i++) {
             stakeTimeRatio.push(_stakeTimeRatio[i]);
         }
@@ -194,7 +206,7 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
         rewardPerTokenStored = rewardPerToken();
         lastUpdateTime = lastTimeRewardApplicable();
         if (account != address(0)) {
-             UserInfo[] storage users = userInfo[account];
+            UserInfo[] storage users = userInfo[account];
             for (uint256 i = 0; i < users.length; i++) {
                 if (users[i].power > 0) {
                     users[i].reward = earned(account, i);
@@ -227,7 +239,10 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
         require(_amount > 0, "Cannot stake 0");
         require(_durationType > 0, "stake time is too short");
         require(_durationType <= 36, "stake time is too long");
-        require( _amount > MIN_DEPOSIT_AMOUNT, "Deposit amount must be greater than MIN_DEPOSIT_AMOUNT");
+        require(
+            _amount > MIN_DEPOSIT_AMOUNT,
+            "Deposit amount must be greater than MIN_DEPOSIT_AMOUNT"
+        );
 
         // transfer token to this contract
         uint256 balanceBefore = IERC20(stakedToken).balanceOf(address(this));
@@ -240,8 +255,18 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
         uint256 currentAmount = balanceEnd - balanceBefore;
         uint256 stakePower = (currentAmount * (stakeTimeRatio[_durationType])) /
             (basRate);
-        
-        userInfo[_stakerAddress].push(UserInfo(currentAmount, block.timestamp, _durationType, stakePower, 0, 0, rewardPerTokenStored));
+
+        userInfo[_stakerAddress].push(
+            UserInfo(
+                currentAmount,
+                block.timestamp,
+                _durationType,
+                stakePower,
+                0,
+                0,
+                rewardPerTokenStored
+            )
+        );
         uint256 positionID = userInfo[_stakerAddress].length - 1;
 
         // update total info
@@ -266,7 +291,10 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
         require(_amount > 0, "Cannot stake 0");
         require(_durationType > 0, "stake time is too short");
         require(_durationType <= 36, "stake time is too long");
-        require( _amount > MIN_DEPOSIT_AMOUNT, "Deposit amount must be greater than MIN_DEPOSIT_AMOUNT");
+        require(
+            _amount > MIN_DEPOSIT_AMOUNT,
+            "Deposit amount must be greater than MIN_DEPOSIT_AMOUNT"
+        );
 
         // transfer token to this contract
         uint256 balanceBefore = IERC20(stakedToken).balanceOf(address(this));
@@ -279,8 +307,18 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
         uint256 currentAmount = balanceEnd - balanceBefore;
         uint256 stakePower = (currentAmount * (stakeTimeRatio[_durationType])) /
             (basRate);
-        
-        userInfo[msg.sender].push(UserInfo(currentAmount, block.timestamp, _durationType, stakePower, 0, 0, rewardPerTokenStored));
+
+        userInfo[msg.sender].push(
+            UserInfo(
+                currentAmount,
+                block.timestamp,
+                _durationType,
+                stakePower,
+                0,
+                0,
+                rewardPerTokenStored
+            )
+        );
         uint256 positionID = userInfo[msg.sender].length - 1;
 
         // update total info
@@ -297,7 +335,7 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
     }
 
     function fixUpdateUserPower(
-        address user, 
+        address user,
         uint256 positionID
     ) external updateReward(user) nonReentrant {
         UserInfo storage updateUser = userInfo[user][positionID];
@@ -311,13 +349,10 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
 
     // Withdraw without caring about punish
     function withdraw(
-        uint256 amount, 
+        uint256 amount,
         uint256 positionID
     ) external updateReward(msg.sender) nonReentrant {
-        require(
-            withdrawOpened,
-            "Have not opened"
-        );
+        require(withdrawOpened, "Have not opened");
         require(
             amount > MIN_WITHDRAW_AMOUNT,
             "Withdraw amount must be greater than MIN_WITHDRAW_AMOUNT"
@@ -360,7 +395,7 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
     // (1-(lockTime/stakeTime))*10%
     function punishStake(
         address user,
-        uint256 withdrawAmount, 
+        uint256 withdrawAmount,
         uint256 positionID
     ) public view returns (uint256) {
         UserInfo memory _userInfo = userInfo[user][positionID];
@@ -378,15 +413,10 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
         }
     }
 
-    function harvest(uint256 positionID)
-        external
-        updateReward(msg.sender)
-        nonReentrant
-    {
-        require(
-            withdrawOpened,
-            "Have not opened"
-        );
+    function harvest(
+        uint256 positionID
+    ) external updateReward(msg.sender) nonReentrant {
+        require(withdrawOpened, "Have not opened");
         uint256 reward = userInfo[msg.sender][positionID].reward;
         require(reward > 0, "no reward");
         UserInfo storage user = userInfo[msg.sender][positionID];
@@ -400,7 +430,10 @@ contract UXLINKTokenRewardPoolMultiple is IDeltaRewardPoolMultiple, ReentrancyGu
         return Math.min(block.timestamp, periodFinish);
     }
 
-    function earned(address account, uint256 positionID) public view returns (uint256) {
+    function earned(
+        address account,
+        uint256 positionID
+    ) public view returns (uint256) {
         UserInfo memory user = userInfo[account][positionID];
         return
             (user.power * (rewardPerToken() - (user.rewardPerTokenPaid))) /
