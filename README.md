@@ -45,16 +45,16 @@ regarding UXLink social accounts, news, and networking.
 ### Install
 
 1. Install the required packages
-   ```
-   npm install
-   ```
+ ```
+ npm install
+ ```
 
 2. Open hardhat.config.js file and add the following scripts (we use the https://www.alchemy.com service):
   
-   ```
-   const PRIVATE_KEY = "your-wallet-private-key";
-   const alchemyNetworkUrl = "https://arb-goerli.alchemyapi.io/v2/your-api-key";
-   ```
+ ```
+ const PRIVATE_KEY = "your-wallet-private-key";
+ const alchemyNetworkUrl = "https://arb-goerli.alchemyapi.io/v2/your-api-key";
+ ```
 
 ### Compile
   ```
