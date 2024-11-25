@@ -49,7 +49,7 @@ regarding UXLink social accounts, news, and networking.
  npm install
  ```
 
-2. Open hardhat.config.js file and add the following scripts (we use the https://www.alchemy.com service):
+2. Open hardhat.config.js file and add the following scripts (we use the https://www.alchemy.com service)
   
  ```
  const PRIVATE_KEY = "your-wallet-private-key";
@@ -57,9 +57,9 @@ regarding UXLink social accounts, news, and networking.
  ```
 
 ### Compile
-  ```
-  npx hardhat compile
-  ```
+```
+npx hardhat compile
+```
 ### Test
   ```
   npx hardhat test
