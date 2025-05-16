@@ -19,7 +19,6 @@ pub mod batch_transfer {
         require!(!targets.is_empty(), ErrorCode::InvalidInput);
         require!(targets.len() == amounts.len(), ErrorCode::InvalidInput);
 
-        // 获取剩余账户迭代器
         let remaining_accounts = &mut ctx.remaining_accounts.iter();
 
         for (i, target) in targets.iter().enumerate() {
@@ -28,7 +27,6 @@ pub mod batch_transfer {
             let expected_ata = get_associated_token_address(target, &ctx.accounts.mint.key());
             require!(target_ata_info.key() == expected_ata, ErrorCode::InvalidATA);
 
-            // 使用 delegate_authority 作为 authority
             let cpi_accounts = Transfer {
                 from: ctx.accounts.user_token_account.to_account_info(),
                 to: target_ata_info.clone(),
