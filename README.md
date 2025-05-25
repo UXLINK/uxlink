@@ -9,7 +9,9 @@ UXLINK Social Growth Layer is an infrastructure Layer which contains chain abstr
 
 - Web: [dapp.uxlink.io](https://dapp.uxlink.io)
 - Line DApp: [lineapp.uxlink.io](https://lineapp.uxlink.io)
+- Airdrop2049: [https://www.airdrop2049.com](https://www.airdrop2049.com)
 - INVITE Mini App: [https://t.me/UXINVITE_bot/app](https://t.me/UXINVITE_bot/app?startapp=inviteCode=9408)
+- One GAS:[https://oaog.uxlink.io](https://oaog.uxlink.io)
 
 ## Socials / Contact
 
